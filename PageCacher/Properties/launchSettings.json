@@ -1,9 +1,0 @@
-{
-    "profiles": {
-      "HallwayInfoPanelGMH": {
-        "commandName": "Project",
-        "commandLineArgs": "192.168.111.160 /run/app/htmlcache/",
-        "workingDirectory": "/home/jachym/"
-      }
-    }
-  }
