@@ -23,15 +23,24 @@ namespace PageCacher {
 
 
       while (true) {
-        HttpResponseMessage jidelnaResponse = jidelna.Send(new HttpRequestMessage(HttpMethod.Get, uriBuilderJidelna.Uri));
-        HttpResponseMessage clsResponse = clsGroup.Send(new HttpRequestMessage(HttpMethod.Get, uriBuilderTimeTable.Uri));
+        HttpResponseMessage jidelnaResponse;
+        HttpResponseMessage clsResponse;
+
+        try {
+          jidelnaResponse = jidelna.Send(new HttpRequestMessage(HttpMethod.Get, uriBuilderJidelna.Uri));
+          clsResponse = clsGroup.Send(new HttpRequestMessage(HttpMethod.Get, uriBuilderTimeTable.Uri));
+        } catch (Exception e) {
+          goto SLEEP_AND_REPEAT;
+        }
 
         String jidelnaHTML = jidelnaResponse.Content.ReadAsStringAsync().Result;
         String clsHTML = clsResponse.Content.ReadAsStringAsync().Result;
 
         File.WriteAllText(args[1] + "/jidelna.html", jidelnaHTML);
         File.WriteAllText(args[1] + "/clsGroup.html", clsHTML);
+        
 
+        SLEEP_AND_REPEAT:
         Thread.Sleep(10000);
       }
 
