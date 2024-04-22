@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PageCacher")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+20fc6bb0ff9508f6431bbf723d04007b9c5603c9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5a9bc3f876a83c157d37f55194c0a0635079790f")]
 [assembly: System.Reflection.AssemblyProductAttribute("PageCacher")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PageCacher")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
