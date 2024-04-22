@@ -25,3 +25,6 @@ PageCacher/bin/Debug/net8.0/PageCacher.dll
 /PageCacher/obj/PageCacher.csproj.nuget.g.props
 /PageCacher/obj/project.assets.json
 /PageCacher/obj/project.nuget.cache
+/PageCacher/bin/Release/net8.0
+/PageCacher/PageCacher.csproj.user
+/PageCacher/Properties/PublishProfiles

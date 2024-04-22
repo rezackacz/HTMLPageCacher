@@ -4,7 +4,7 @@ using System.Net.Http;
 namespace PageCacher {
   public class Program {
     public static void Main(string[] args) {
-      if (args.Length == 0) { Console.WriteLine("Usage: PageCacher SERVER_IP STORAGE_URL"); return; }
+      if (args.Length == 0) { Console.WriteLine("Usage: PageCacher SERVER_IP STORAGE_URL CLASSROOM_GROUP_ID"); return; }
 
       Console.WriteLine(args[0]);
       Console.WriteLine(args[1]);
