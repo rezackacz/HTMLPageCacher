@@ -7,3 +7,5 @@ PageCacher/obj/Debug/net8.0/PageCacher.AssemblyInfoInputs.cache
 PageCacher/obj/Debug/net8.0/PageCacher.AssemblyInfo.cs
 PageCacher/bin/Debug/net8.0/PageCacher.pdb
 PageCacher/bin/Debug/net8.0/PageCacher.dll
+/.vs
+/PageCacher/bin/Debug/net8.0
