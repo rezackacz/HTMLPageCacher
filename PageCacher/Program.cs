@@ -15,7 +15,10 @@ namespace PageCacher {
       uriBuilderJidelna.Port = 80;
       uriBuilderJidelna.Path = "jidelna.html";
 
-      UriBuilder uriBuilderTimeTable = uriBuilderJidelna; uriBuilderTimeTable.Path = "classroomGroup" + args[2] + ".html";
+      UriBuilder uriBuilderTimeTable = new();
+      uriBuilderTimeTable.Path = "classroomGroup" + args[2] + ".html";
+      uriBuilderTimeTable.Host = args[0];
+      uriBuilderTimeTable.Port = 80;
 
 
       HttpClient jidelna = new HttpClient();

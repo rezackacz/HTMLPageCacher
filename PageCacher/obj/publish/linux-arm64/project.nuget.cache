@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "kVdbbObBvQBzO5lWyzBxP3Vnn3oLe0jbTk2J6DGAN/PIVXxI1S8DEtEpNS+BDBo+5KyhGf0KP/jzMdtiZepNuw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Jáchym\\source\\repos\\rezackacz\\HTMLPageCacher\\PageCacher\\PageCacher.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Jáchym\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.4\\microsoft.net.illink.tasks.8.0.4.nupkg.sha512",
+    "C:\\Users\\Jáchym\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-arm64\\8.0.4\\microsoft.netcore.app.runtime.linux-arm64.8.0.4.nupkg.sha512",
+    "C:\\Users\\Jáchym\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-arm64\\8.0.4\\microsoft.aspnetcore.app.runtime.linux-arm64.8.0.4.nupkg.sha512",
+    "C:\\Users\\Jáchym\\.nuget\\packages\\microsoft.netcore.app.host.linux-arm64\\8.0.4\\microsoft.netcore.app.host.linux-arm64.8.0.4.nupkg.sha512"
+  ],
+  "logs": []
+}
