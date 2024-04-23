@@ -4,7 +4,7 @@ using System.Net.Http;
 namespace PageCacher {
   public class Program {
     public static void Main(string[] args) {
-      if (args.Length == 0) { Console.WriteLine("Usage: PageCacher SERVER_IP STORAGE_URL CLASSROOM_GROUP_ID"); return; }
+      if (args.Length == 0) { Console.WriteLine("Usage: PageCacher SERVER_IP CACHE_PATH CLASSROOM_GROUP_ID"); return; }
 
       Console.WriteLine(args[0]);
       Console.WriteLine(args[1]);
@@ -30,6 +30,7 @@ namespace PageCacher {
           jidelnaResponse = jidelna.Send(new HttpRequestMessage(HttpMethod.Get, uriBuilderJidelna.Uri));
           clsResponse = clsGroup.Send(new HttpRequestMessage(HttpMethod.Get, uriBuilderTimeTable.Uri));
         } catch (Exception e) {
+          Console.WriteLine("Download failed :(.");
           goto SLEEP_AND_REPEAT;
         }
 
