@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Text.Encodings.Web;
@@ -10,6 +9,8 @@ namespace PageCacher {
 
     private const string no_net_html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"/><title>NENÍ PŘIPOJENO</title></head><body style=\"display: flex;height: 100%;font-size: xxx-large;flex-flow: column;justify-content: center;font-family: sans-serif;text-align: center;\"><h1 id=\"main\">Připojení k serveru se nepodařilo.</h1><h2 style=\"font-family: monospace;text-align: center;\">Síť nemusí být k dispozici, nebo nastal problém se serverem.</h2><style type=\"text/css\"></style><deepl-input-controller></deepl-input-controller></body></html>";
     private static string svg_link = "";
+    private static DateTime LastOnline = new(0);
+    private static bool IsRebuilt = true;
 
     public static void Main(string[] args) {
       if (args.Length != 4) { Console.WriteLine("Usage: PageCacher SERVER_IP CACHE_PATH CLASSROOM_GROUP_ID SVG_URL"); return; }
@@ -73,6 +74,8 @@ namespace PageCacher {
         String jidelnaHTML = jidelnaResponse.Content.ReadAsStringAsync().Result;
         String clsHTML = clsResponse.Content.ReadAsStringAsync().Result;
 
+        LastOnline = DateTime.Now;
+        IsRebuilt = false;
 
         File.WriteAllText(cache_path + "/jidelna.html", jidelnaHTML);
         File.WriteAllText(cache_path + "/clsGroup.html", clsHTML);
@@ -80,41 +83,55 @@ namespace PageCacher {
     }
     private static void NetworklessRender(string cache_path) {
       if (File.Exists(cache_path + "/jidelna.html") && File.Exists(cache_path + "/clsGroup.html")) {
-        string jidelnaHTML = File.ReadAllText(cache_path + "/jidelna.html");
-        string clsGroupHTML = File.ReadAllText(cache_path + "/clsGroup.html");
+        if (!IsRebuilt) {
+          string jidelnaHTML = File.ReadAllText(cache_path + "/jidelna.html");
+          string clsGroupHTML = File.ReadAllText(cache_path + "/clsGroup.html");
 
-        string jidelnaHTMLsub = jidelnaHTML.Substring(jidelnaHTML.IndexOf("<body"), jidelnaHTML.IndexOf("</body>") - jidelnaHTML.IndexOf("<body") + "</body>".Length);
-        string clsGroupHTMLsub = clsGroupHTML.Substring(clsGroupHTML.IndexOf("<body"), clsGroupHTML.IndexOf("</body>") - clsGroupHTML.IndexOf("<body") + "</body>".Length);
+          string jidelnaHTMLsub = jidelnaHTML.Substring(jidelnaHTML.IndexOf("<body"), jidelnaHTML.IndexOf("</body>") - jidelnaHTML.IndexOf("<body") + "</body>".Length);
+          string clsGroupHTMLsub = clsGroupHTML.Substring(clsGroupHTML.IndexOf("<body"), clsGroupHTML.IndexOf("</body>") - clsGroupHTML.IndexOf("<body") + "</body>".Length);
 
-        XDocument jidelnaHtmlAsXDocument = XDocument.Parse(jidelnaHTMLsub);
-        XDocument clsGroupAsXDocument = XDocument.Parse(clsGroupHTMLsub);
+          XDocument jidelnaHtmlAsXDocument = XDocument.Parse(jidelnaHTMLsub);
+          XDocument clsGroupAsXDocument = XDocument.Parse(clsGroupHTMLsub);
 
-        XElement jidelnaBody = jidelnaHtmlAsXDocument.Root;
+          XElement jidelnaBody = jidelnaHtmlAsXDocument.Root;
 
-        XAttribute svgsrc = new("src", svg_link);
-        XAttribute svgstyle = new("style", "left: 0;bottom: 0;position: absolute;height: 6vw;");
-        XElement xESVG = new("img", svgsrc, svgstyle);
+          string lastonline = "Data jsou z: " + LastOnline.ToString("dd.MM.yyyy HH:mm:ss");
 
-        jidelnaBody.Add(xESVG);
-        jidelnaHtmlAsXDocument.Root.ReplaceWith(jidelnaBody);
 
-        XElement clsBody = clsGroupAsXDocument.Root;
-        clsBody.Add(xESVG);
-        clsGroupAsXDocument.Root.ReplaceWith(clsBody);
+          XAttribute svgsrc = new("src", svg_link);
+          XAttribute svgstyle = new("style", "height: 6vw;");
+          XElement xESVG = new("img", svgsrc, svgstyle);
 
-        string jidelnaHTMLreplaced = jidelnaHTML.Replace(jidelnaHTMLsub, jidelnaBody.ToString());
-        string clsGroupHTMLreplaced = clsGroupHTML.Replace(clsGroupHTMLsub, clsBody.ToString());
-
-        File.WriteAllText(cache_path + "/jidelna.html", jidelnaHTMLreplaced);
-        File.WriteAllText(cache_path + "/clsGroup.html", clsGroupHTMLreplaced);
+          XElement xELastOnline = new("div", lastonline);
+          XElement xEOfflineDiv = new("div", new XAttribute("style", "position: absolute;left: 0;bottom: 0;display: grid;font-size: 2vw;"), xESVG, xELastOnline);
 
 
 
-        return;
+          jidelnaBody.Add(xEOfflineDiv);
+          jidelnaHtmlAsXDocument.Root.ReplaceWith(jidelnaBody);
 
+
+          XElement clsBody = clsGroupAsXDocument.Root;
+          clsBody.Add(xEOfflineDiv);
+
+          clsGroupAsXDocument.Root.ReplaceWith(clsBody);
+
+
+
+          string jidelnaHTMLreplaced = jidelnaHTML.Replace(jidelnaHTMLsub, jidelnaBody.ToString());
+          string clsGroupHTMLreplaced = clsGroupHTML.Replace(clsGroupHTMLsub, clsBody.ToString());
+
+          File.WriteAllText(cache_path + "/jidelna.html", jidelnaHTMLreplaced);
+          File.WriteAllText(cache_path + "/clsGroup.html", clsGroupHTMLreplaced);
+
+          IsRebuilt = true;
+
+          return;
+        }
       } else {
         File.WriteAllText(cache_path + "/jidelna.html", no_net_html);
         File.WriteAllText(cache_path + "/clsGroup.html", no_net_html);
+        IsRebuilt = true;
       }
 
 
